@@ -60,6 +60,19 @@ with col1:
 with col2:
     st.subheader("Mapa")
 
+    st.text_input("Digite um endereço:", placeholder="Rua endereço, 123 - Bairro")
+
+    # st.markdown(
+    #     """
+    #     <style>
+    #         input[type="text"] {
+    #             color: #808080;
+    #         }
+    #     </style>
+    #     """,
+    #     unsafe_allow_html=True,
+    # )
+
     # Adiciona um mapa com a biblioteca Folium
     m = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
     folium.Marker([-23.5505, -46.6333], popup="Local 1").add_to(m)
