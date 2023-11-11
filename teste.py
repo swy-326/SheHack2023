@@ -1,8 +1,8 @@
 import geopandas as gpd
 
-gdf = gpd.read_file('EPSG900913.shp')
-print(gdf['eq_enderec'].iloc[0])
 import folium
+gdf = gpd.read_file('EPSG900913.shp')
+
 lat=[]
 lon=[]
 from geopy.geocoders import Nominatim
@@ -18,5 +18,7 @@ for i in range(len(gdf)):
     except:
         lat.append("")
         lon.append("")
-gdf["latitude"]=lat
-gdf["longitude"]=lon
+
+data = {'latitude': lat, 'longitude': lon}
+
+print(data)

@@ -5,6 +5,7 @@ from streamlit_folium import folium_static
 import plotly.express as px
 import geopandas as gpd
 from geopy import Nominatim
+from teste import data
 # Load the shapefile
 gdf = gpd.read_file('EPSG900913.shp')
 print(gdf.head())
@@ -72,18 +73,12 @@ with col2:
     st.text_input("Digite um endereço:", placeholder="Rua endereço, 123 - Bairro")
 
     m = folium.Map(location=[-23.5505, -46.6333], zoom_start=13)
-    for i in range(len(gdf)):
-        try:
-            geolocator = Nominatim(user_agent="my_app")
-            location = geolocator.geocode(gdf['eq_enderec'].iloc[i])
+    for i in range(len(data)):
 
-            latitude = location.latitude
-            longitude = location.longitude
 
-            # Create the follium map
-            folium.Marker(location=[latitude, longitude], popup=gdf["eq_nome"][i]).add_to(m)
-        except:
-            pass
+        # Create the follium map
+        folium.Marker(location=[data['latitude'], data['longitude']], popup=gdf["eq_nome"][i]).add_to(m)
+
 
     # Exibe o mapa no Streamlit
     folium_static(m)
