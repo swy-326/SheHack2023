@@ -6,9 +6,9 @@ import plotly.express as px
 import geopandas as gpd
 from geopy import Nominatim
 from teste import data
+import pandas as pd
 # Load the shapefile
-gdf = gpd.read_file('EPSG900913.shp')
-print(gdf.head())
+gdf = pd.read_excel('Bibliotecas.xlsx')
 
 
 

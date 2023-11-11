@@ -19,6 +19,4 @@ for i in range(len(gdf)):
         lat.append("")
         lon.append("")
 
-data = {'latitude': lat, 'longitude': lon}
-
-print(data)
+data = {'latitude': lat, 'longitude': lon,}
