@@ -3,16 +3,16 @@ import folium
 import streamlit_folium as st_folium
 from streamlit_folium import folium_static
 import plotly.express as px
-import pandas as pd
+import geopandas as gpd
+from geopy import Nominatim
+# Load the shapefile
+gdf = gpd.read_file('EPSG900913.shp')
+print(gdf.head())
 
-bibliotecas_data = {
-    'Biblioteca': ['Biblioteca Mario de Andrade', 'Biblioteca Villa-Lobos', 'Biblioteca Belmonte'],
-    'Latitude': [-23.5474534, -23.5467546, -23.6506861],
-    'Longitude': [-46.6420769, -46.7298958, -46.7110663]
-}
 
-# Criar DataFrame
-bibliotecas_df = pd.DataFrame(bibliotecas_data)
+
+
+
 
 st.set_page_config(page_title="Estuda SP", page_icon=":books:", layout="wide")
 st.title("Estuda SP")
@@ -27,7 +27,7 @@ with col1:
         <div style="background-color: #BCCCEC; padding: 20px; border-radius: 10px;">
             <h3 style="color: #000000;">
                 <a href="https://www.exemplo.com" target="_blank" style="color: inherit; text-decoration: underline;">
-                    Local 1
+                    Biblioteca 1
                 </a>
             </h3>
             <p>Rua endereço, 123 - Bairro</p>
@@ -41,7 +41,7 @@ with col1:
         <div style="background-color: #BCCCEC; padding: 20px; border-radius: 10px; margin-top: 20px">
             <h3 style="color: #000000;">
                 <a href="https://www.exemplo.com" target="_blank" style="color: inherit; text-decoration: underline;">
-                    Local 3
+                    Biblioteca 3
                 </a>
             </h3>
             <p>Rua endereço, 123 - Bairro</p>
@@ -57,7 +57,7 @@ with col1:
         <div style="background-color: #BCCCEC; padding: 20px; border-radius: 10px;">
             <h3 style="color: #000000;">
                 <a href="https://www.exemplo.com" target="_blank" style="color: inherit; text-decoration: underline;">
-                    Local 2
+                    Biblioteca 2
                 </a>
             </h3>
             <p>Rua endereço, 123 - Bairro</p>
@@ -71,12 +71,19 @@ with col2:
 
     st.text_input("Digite um endereço:", placeholder="Rua endereço, 123 - Bairro")
 
+    m = folium.Map(location=[-23.5505, -46.6333], zoom_start=13)
+    for i in range(len(gdf)):
+        try:
+            geolocator = Nominatim(user_agent="my_app")
+            location = geolocator.geocode(gdf['eq_enderec'].iloc[i])
 
-    # Adiciona um mapa com a biblioteca Folium
-    m = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
-    for i in range(len(bibliotecas_data)):
-        folium.Marker([bibliotecas_data['Latitude'][i], bibliotecas_data['Longitude'][i]], popup=bibliotecas_data['Biblioteca'][i]).add_to(m)
-    # folium.Marker([-23.547408,-46.6421673], popup="Local 1").add_to(m)
+            latitude = location.latitude
+            longitude = location.longitude
+
+            # Create the follium map
+            folium.Marker(location=[latitude, longitude], popup=gdf["eq_nome"][i]).add_to(m)
+        except:
+            pass
 
     # Exibe o mapa no Streamlit
     folium_static(m)
